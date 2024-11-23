@@ -1,0 +1,1 @@
+devpod up . --provider docker --provider-option "DEVCONTAINER_DOCKER_ARGS=--network=host" --provider-option "NVIDIA_VISIBLE_DEVICES=all" 

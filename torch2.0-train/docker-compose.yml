@@ -1,4 +1,3 @@
-version: '3.0'
 services:
   dl:
     logging:
@@ -6,6 +5,7 @@ services:
     stdin_open: true  # docker run -i
     tty: true        # docker run -t
     user: root
+    # running in privileged
     privileged: true
     # Allow container to access host port on gateway IP
     extra_hosts:
@@ -19,27 +19,30 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+        # Put custom system limits
         limits:
-          cpus: '1'
-          memory: 50G
+          cpus: '24'
+          # memory: 50G
     build:
       context: ./
       dockerfile: ./docker-common/DOCKERFILE
     # port forward needed when NOT in HOST network 
     # ports:
     #   - "8888:8888" 
+    network_mode: "host"
     working_dir: /root/projects
     container_name: torch2-train
-    # running in privileged
     devices:
       - /dev/fuse
     environment:
       - FUSE_DEBUG=1
-    volumes: 
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
       # May add`delegated` flag to support intensive I/O operations in environ
         # e.g. /c/Users/Mo/Documents/GitHub/Projects:/root/projects:delegated
       - /c/Users/Mo/Documents/GitHub/Projects:/root/projects
       - /var/run/docker.sock:/var/run/docker.sock
+      # - /usr/local/bin/docker:/usr/bin/docker
       - /c/Users/Mo/.ssh/:/root/.ssh/
       - /c/Users/Mo/.aws/:/root/.aws/
       # Kubernetes configuration

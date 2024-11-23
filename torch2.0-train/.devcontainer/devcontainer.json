@@ -1,0 +1,26 @@
+{
+    "name": "Deep Learning Workspace",
+    "image": "supermomo668/awsdeeplearningtorch2-jupyter-docker-dl",
+    "runArgs": [
+        "--privileged",
+        "--network=host",
+        "--gpus=all",
+        "--add-host=host.docker.internal:host-gateway",
+        "--add-host=kubernetes.docker.internal:host-gateway",
+        "--device=/dev/fuse",
+        "--cpus=24"
+    ],
+    "mounts": [
+        "source=/c/Users/Mo/Documents/GitHub/Projects,target=/root/projects,type=bind",
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+        "source=/c/Users/Mo/.ssh/,target=/root/.ssh/,type=bind",
+        "source=/c/Users/Mo/.aws/,target=/root/.aws/,type=bind",
+        "source=/c/Users/Mo/.kube,target=/root/.kube,type=bind"
+    ],
+    "containerEnv": {
+        "FUSE_DEBUG": "1",
+        "DOCKER_HOST": "unix:///var/run/docker.sock"
+    },
+    // "workspaceFolder": "/root/projects",
+    "remoteUser": "root"
+}
